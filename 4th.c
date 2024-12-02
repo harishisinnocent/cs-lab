@@ -13,6 +13,7 @@ void compressString(char *str) {
 
 int main() {
     char str[100];
+    printf("enter:");
     scanf("%s", str);
     compressString(str);
     return 0;
