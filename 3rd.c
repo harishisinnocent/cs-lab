@@ -1,25 +1,54 @@
 #include <stdio.h>
 
-struct Element {
-    int row, col, value;
-};
+#define ROWS 3
+#define COLS 3
 
-void addSparseMatrices(struct Element m1[], struct Element m2[], struct Element result[], int size1, int size2) {
-    int i = 0, j = 0, k = 0;
-    while (i < size1 && j < size2) {
-        if (m1[i].row < m2[j].row || (m1[i].row == m2[j].row && m1[i].col < m2[j].col)) result[k++] = m1[i++];
-        else if (m1[i].row > m2[j].row || (m1[i].row == m2[j].row && m1[i].col > m2[j].col)) result[k++] = m2[j++];
-        else { result[k] = m1[i]; result[k++].value += m2[j++].value; i++; }
+// Function to print matrix
+void printMatrix(int matrix[ROWS][COLS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
     }
-    while (i < size1) result[k++] = m1[i++];
-    while (j < size2) result[k++] = m2[j++];
+}
+
+// Function to add two sparse matrices
+void addSparseMatrices(int m1[ROWS][COLS], int m2[ROWS][COLS], int result[ROWS][COLS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            result[i][j] = m1[i][j] + m2[i][j];  // Adding corresponding elements
+        }
+    }
 }
 
 int main() {
-    struct Element m1[] = {{0, 0, 5}, {1, 2, 3}, {2, 1, 4}};
-    struct Element m2[] = {{0, 0, 1}, {1, 2, 2}, {2, 1, 5}};
-    struct Element result[6];
-    addSparseMatrices(m1, m2, result, 3, 3);
-    for (int i = 0; i < 6; i++) printf("Row: %d Col: %d Value: %d\n", result[i].row, result[i].col, result[i].value);
+    // Define two sparse matrices
+    int m1[ROWS][COLS] = {
+        {0, 0, 5},
+        {0, 0, 0},
+        {4, 0, 0}
+    };
+    
+    int m2[ROWS][COLS] = {
+        {1, 0, 0},
+        {0, 0, 3},
+        {0, 6, 0}
+    };
+
+    int result[ROWS][COLS] = {0};  // Initialize result matrix to zero
+
+    printf("Matrix 1:\n");
+    printMatrix(m1);
+    
+    printf("\nMatrix 2:\n");
+    printMatrix(m2);
+    
+    // Add sparse matrices
+    addSparseMatrices(m1, m2, result);
+    
+    printf("\nResultant Matrix (After Addition):\n");
+    printMatrix(result);
+    
     return 0;
 }
